@@ -16,9 +16,10 @@
       "noImplicitAny": false,
       "strictBindCallApply": false,
       "forceConsistentCasingInFileNames": false,
-      "noFallthroughCasesInSwitch": false,
-
-      "watch": true
-    }
+      "noFallthroughCasesInSwitch": false
+    },
+    "include": [
+      "src/**/*"
+    ],
   }
   
