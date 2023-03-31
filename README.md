@@ -4,7 +4,7 @@ A classe `Procedure` é uma classe base que permite chamar *stored procedures* d
 
 ## Instalação
 ```bash
-npm install typeorm-procedure
+npm install typeorm-oracle-procedure
 ```
 
 ## Construtor
