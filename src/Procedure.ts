@@ -1,13 +1,13 @@
 import { DataSource, QueryRunner } from "typeorm";
 import * as oracledb from "oracledb";
 
-export default class Procedure {
+export class Procedure {
   protected name: string = null;
 
   private inputs: Inputs = {};
   private outputs: Outputs = {};
 
-  constructor(private connection: DataSource) {}
+  constructor(protected connection: DataSource) {}
 
   async execute() {
     const queryRunner = this.connection.createQueryRunner();
