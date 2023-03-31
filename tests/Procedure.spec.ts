@@ -1,6 +1,6 @@
 import ProcedureTest from "./mock/ProcedureTest";
 import DataSource from "./mock/DataSource";
-import Procedure from "../src/Procedure";
+import { Procedure } from "../src/Procedure";
 
 test("should be throw exception when property name not exists", async () => {
   expect.assertions(2);
