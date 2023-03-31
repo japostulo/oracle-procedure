@@ -7,17 +7,46 @@ export class Procedure {
   private inputs: Inputs = {};
   private outputs: Outputs = {};
 
-  constructor(protected connection: DataSource) {}
+  constructor(protected connection: DataSource | oracledb.Connection) {}
 
   async execute() {
-    const queryRunner = this.connection.createQueryRunner();
-
     try {
-      const runner = await queryRunner.query(this.procedure, this.bindings);
-      return await this.getData(runner);
+      switch (true) {
+        case this.connection instanceof DataSource:
+          return await this.executeDataSource();
+        case this.connection instanceof oracledb.Connection:
+          return await this.executeOracle();
+        default:
+          throw new Error("Conexão recebida não é suportada!");
+      }
     } catch (error) {
       throw error;
     }
+  }
+
+  async executeOracle() {
+    try {
+      const runner = await this.connection.execute(this.procedure, this.fields);
+
+      if (!runner.outBinds)
+        throw Error(
+          `Execução da procedure ${this.constructor.name} não foi concluída`
+        );
+
+      const values = Object.values(runner.outBinds);
+
+      return await this.getData(values);
+    } finally {
+      this.connection.close();
+    }
+  }
+
+  async executeDataSource() {
+    const queryRunner = this.connection.createQueryRunner();
+
+    const runner = await queryRunner.query(this.procedure, this.bindings);
+
+    return await this.getData(runner);
   }
 
   private get indexCursor(): number {
@@ -26,25 +55,20 @@ export class Procedure {
     );
   }
 
-  private async getData(runner: QueryRunner) {
-    let cursor = null;
-
-    if (this.indexCursor != -1) cursor = runner[this.indexCursor];
-
+  private async getData(runner: QueryRunner | oracledb.Result) {
     const data: Outputs = {};
 
     const keys = Object.keys(this.outputs);
 
-    for (let index = 0; index < keys.length; index++) {
-      const key = keys[index];
+    if (this.indexCursor != -1) {
+      const { 0: cursorKey } = keys.splice(this.indexCursor, 1);
 
-      if (index == this.indexCursor) {
-        data[key] = await this.getDataFromCursor(cursor);
-        continue;
-      }
+      const cursor = runner[this.indexCursor];
 
-      data[key] = runner[index];
+      data[cursorKey] = await this.getDataFromCursor(cursor);
     }
+
+    keys.forEach((key: string, index: number) => (data[key] = runner[index]));
 
     return data;
   }
@@ -58,9 +82,12 @@ export class Procedure {
 
     while ((row = await cursor.getRow())) {
       const line = {};
-      columns.forEach(
-        (column: any) => (line[column.toLowerCase()] = row[column])
-      );
+
+      columns.forEach((column: any, index: number) => {
+        line[column.toLowerCase()] = Array.isArray(row)
+          ? row[index]
+          : row[column];
+      });
 
       data.push(line);
     }
