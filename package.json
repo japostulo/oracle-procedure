@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "nest-oracle-procedure",
   "version": "1.1.0",
   "description": "Pacote responsável por padronizar a chamada de procedure com o nest e o oracledb",
@@ -9,12 +10,22 @@
     "build": "tsc -p . -w",
     "start": "nodemon src/index.js",
     "serve": "nodemon src/index.ts",
+=======
+  "name": "typeorm-oracle-procedure",
+  "version": "0.1.0",
+  "description": "Pacote responsável por padronizar a chamada de procedure com o typeorm e o oracledb",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "serve": "tsx watch src/index.ts",
+>>>>>>> 7ede6f0 (Adiciona tsx e configura jest)
     "test": "jest",
     "prepublish": "npm run test && npm run build"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/japostulo/oracledb-procedure.git"
+    "url": "git+ssh://git@github.com/japostulo/typeorm-oracle-procedure.git"
   },
   "keywords": [
     "procedure",
@@ -23,11 +34,14 @@
   "author": "João Apostulo Neto",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/japostulo/oracledb-procedure/issues"
+    "url": "https://github.com/japostulo/typeorm-oracle-procedure/issues"
   },
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "node",
+    "testMatch": [
+      "**/tests/**/*.spec.[jt]s?(x)"
+    ],
     "coveragePathIgnorePatterns": [
       "/node_modules/",
       "dist"
@@ -36,13 +50,17 @@
   "files": [
     "dist/**/*"
   ],
-  "homepage": "https://github.com/japostulo/oracledb-procedure#readme",
+  "homepage": "https://github.com/japostulo/typeorm-oracle-procedure#readme",
   "devDependencies": {
     "@types/jest": "^29.5.0",
     "jest": "^29.5.0",
     "nodemon": "^2.0.22",
     "ts-jest": "^29.0.5",
+<<<<<<< HEAD
     "ts-node": "^10.9.1",
+=======
+    "tsx": "^3.12.6",
+>>>>>>> 7ede6f0 (Adiciona tsx e configura jest)
     "typescript": "^4.9.5"
   },
   "dependencies": {
