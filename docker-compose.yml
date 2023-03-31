@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  node:
+    build: .
+    container_name: lib_php
+    restart: always
+    working_dir: /var/www/
+    volumes:
+      - ./:/var/www
+    command: npm run build & npm run serve
+    ports:
+      - ${APP_PORT}:3000
