@@ -1,7 +1,7 @@
 import * as oracledb from "oracledb";
-import Procedure from "src/Procedure";
+import { Procedure } from "src/Procedure";
 
-export default function BindOut(type: string = "string"): PropertyDecorator {
+export function BindOut(type: string = "string"): PropertyDecorator {
   return function (target: Procedure, key: string) {
     Object.defineProperty(target, key, {
       get() {
