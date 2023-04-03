@@ -1,5 +1,5 @@
 {
-  "name": "typeorm-oracle-procedure",
+  "name": "oracle-procedure",
   "version": "0.1.0",
   "description": "Pacote responsável por padronizar a chamada de procedure com o typeorm e o oracledb",
   "main": "dist/index.js",
@@ -7,21 +7,21 @@
   "scripts": {
     "build": "tsc",
     "serve": "tsx watch src/index.ts",
-    "test": "jest",
-    "prepublish": "npm run test && npm run build"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/japostulo/typeorm-oracle-procedure.git"
+    "url": "git+ssh://git@github.com/japostulo/oracle-procedure.git"
   },
   "keywords": [
     "procedure",
-    "oracledb"
+    "oracledb",
+    "typeorm"
   ],
   "author": "João Apostulo Neto",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/japostulo/typeorm-oracle-procedure/issues"
+    "url": "https://github.com/japostulo/oracle-procedure/issues"
   },
   "jest": {
     "preset": "ts-jest",
@@ -37,7 +37,7 @@
   "files": [
     "dist/**/*"
   ],
-  "homepage": "https://github.com/japostulo/typeorm-oracle-procedure#readme",
+  "homepage": "https://github.com/japostulo/oracle-procedure#readme",
   "devDependencies": {
     "@types/jest": "^29.5.0",
     "jest": "^29.5.0",
