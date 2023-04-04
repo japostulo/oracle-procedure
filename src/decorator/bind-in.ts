@@ -10,7 +10,7 @@ export function BindIn(type: string = "string"): PropertyDecorator {
       set(value: any) {
         this.inputs[key] = {
           dir: oracledb.BIND_IN,
-          val: value,
+          val: value ?? null,
           type: oracledb[type.toUpperCase()],
         };
       },

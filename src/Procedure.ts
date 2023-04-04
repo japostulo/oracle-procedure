@@ -43,10 +43,15 @@ export class Procedure {
 
   async executeDataSource() {
     const queryRunner = this.connection.createQueryRunner();
+    try {
+      await queryRunner.connect();
 
-    const runner = await queryRunner.query(this.procedure, this.bindings);
+      const runner = await queryRunner.query(this.procedure, this.bindings);
 
-    return await this.getData(runner);
+      return await this.getData(runner);
+    } finally {
+      queryRunner.release();
+    }
   }
 
   private get indexCursor(): number {
