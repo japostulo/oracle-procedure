@@ -13,6 +13,9 @@ export function BindIn(type: string = "string"): PropertyDecorator {
           val: value ?? null,
           type: oracledb[type.toUpperCase()],
         };
+
+        if (!this.orderedParameters.includes(key))
+          this.orderedParameters.push(key)
       },
       enumerable: true,
       configurable: true,
