@@ -1,6 +1,6 @@
 {
   "name": "oracle-procedure",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Pacote responsável por padronizar a chamada de procedure com o typeorm e o oracledb",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
