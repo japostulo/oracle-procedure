@@ -6,8 +6,9 @@ export class Procedure {
 
   private inputs: Inputs = {};
   private outputs: Outputs = {};
+  protected orderedParameters = []
 
-  constructor(protected connection: DataSource | oracledb.Connection) {}
+  constructor(protected connection: DataSource | oracledb.Connection) { }
 
   async execute() {
     try {
@@ -106,8 +107,16 @@ export class Procedure {
     return Object.values(this.fields);
   }
 
-  private get fields() {
-    return Object.assign(this.inputs, this.outputs);
+  private get fields(): Fields {
+    const orderedParameters: Fields = {}
+
+    const fields = Object.assign(this.inputs, this.outputs)
+
+    this.orderedParameters.forEach((key: string) => {
+      orderedParameters[key] = fields[key]
+    })
+
+    return orderedParameters;
   }
 
   private get parameters(): string {
@@ -135,6 +144,8 @@ interface Inputs {
 export interface Outputs {
   [key: string]: any;
 }
+
+export interface Fields extends Inputs, Outputs { }
 
 interface IBinding {
   dir: oracledb.BindDirection;

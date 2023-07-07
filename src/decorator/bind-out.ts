@@ -12,6 +12,9 @@ export function BindOut(type: string = "string"): PropertyDecorator {
           dir: oracledb.BIND_OUT,
           type: oracledb[type.toUpperCase()],
         };
+
+        if (!this.orderedParameters.includes(key))
+          this.orderedParameters.push(key)
       },
       enumerable: true,
       configurable: true,
