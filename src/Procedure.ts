@@ -55,33 +55,27 @@ export class Procedure {
     }
   }
 
-  private get indexCursor(): number {
-    return Object.values(this.outputs).findIndex(
-      (f: any) => f.type == oracledb.CURSOR
-    );
-  }
-
   private async getData(runner: QueryRunner | oracledb.Result) {
     const data: Outputs = {};
 
-    const keys = Object.keys(this.outputs);
+    Object.entries(this.outputs).forEach(([key, value], index) => {
+      if (value.type == oracledb.CURSOR)
+          data[key] = this.getDataFromCursor(runner[index]);
+      else
+          data[key] = runner[index]
+    })
 
-    if (this.indexCursor != -1) {
-      const { 0: cursorKey } = keys.splice(this.indexCursor, 1);
-
-      const cursor = runner[this.indexCursor];
-
-      data[cursorKey] = await this.getDataFromCursor(cursor);
+    for (const key in data) {
+      if (data[key] instanceof Promise) {
+        data[key] = await data[key];
+      }
     }
-
-    keys.forEach((key: string, index: number) => (data[key] = runner[index]));
 
     return data;
   }
 
   private async getDataFromCursor(cursor: oracledb.Result<any>) {
     const columns = cursor.metaData.map((column: any) => column.name);
-
     const data = [];
 
     let row = null;
@@ -99,7 +93,6 @@ export class Procedure {
     }
 
     await cursor.close();
-
     return data;
   }
 
